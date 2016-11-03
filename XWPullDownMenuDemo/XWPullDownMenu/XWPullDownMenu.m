@@ -13,6 +13,17 @@
 #define SelectColor [UIColor whiteColor]
 
 
+@implementation XWMenuModel
+-(instancetype)initWithTitle:(NSString *)title Id:(NSString *)Id{
+    self = [super init];
+    if (self) {
+        _title = title;
+        _Id = Id;
+    }
+    return self;
+}
+@end
+
 @interface XWPullDownMenuCell : UITableViewCell
 @property (nonatomic, strong) UILabel *line;
 @end
@@ -172,7 +183,7 @@
         
         //title
         CGPoint titlePosition = CGPointMake( (i + 0.5) * interval , self.frame.size.height / 2);
-        NSString *titleString = self.titleArray[i];
+        NSString *titleString = [self.titleArray[i] title];
         CATextLayer *title = [self createTextLayerWithNSString:titleString withColor:self.textColor andPosition:titlePosition];
         [self.layer addSublayer:title];
         [titles addObject:title];
@@ -542,7 +553,7 @@
         cell = [[XWPullDownMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     }
-    cell.textLabel.text = self.dataArray[self.currentSelectedMenudIndex][indexPath.row];
+    cell.textLabel.text = [self.dataArray[self.currentSelectedMenudIndex][indexPath.row] title];
     
     if ([cell.textLabel.text isEqualToString:[(CATextLayer *)[_titleLayers objectAtIndex:_currentSelectedMenudIndex] string]]) {
         cell.line.backgroundColor = self.selectedTableViewCellSeparatorColor;
@@ -566,13 +577,13 @@
     cell.line.backgroundColor = self.selectedTableViewCellSeparatorColor;
     cell.textLabel.textColor = self.seletedTextColor;
     
-    self.selectedComplition(self.currentSelectedMenudIndex, indexPath.row);
+    self.selectedComplition(self.currentSelectedMenudIndex, self.dataArray[self.currentSelectedMenudIndex][indexPath.row]);
     
 }
 
 - (void)confiMenuWithSelectRow:(NSInteger)row{
     CATextLayer *title = (CATextLayer *)self.titleLayers[_currentSelectedMenudIndex];
-    title.string = self.dataArray[self.currentSelectedMenudIndex][row];
+    title.string = [self.dataArray[self.currentSelectedMenudIndex][row] title];
     
     [self animateIdicator:_indicatorLayers[_currentSelectedMenudIndex] background:_backGroundView tableView:_tableView title:_titleLayers[_currentSelectedMenudIndex] forward:NO complecte:^{
         _show = NO;

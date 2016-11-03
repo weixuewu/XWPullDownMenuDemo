@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^DidSelectedSuccess)(NSInteger column, NSInteger row);
+@interface XWMenuModel : NSObject
+
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *Id;
+
+-(instancetype)initWithTitle:(NSString *)title Id:(NSString *)Id;
+
+@end
+
+typedef void(^DidSelectedSuccess)(NSInteger column, XWMenuModel *model);
 
 @interface XWPullDownMenu : UIView
 
